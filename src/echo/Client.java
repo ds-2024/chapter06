@@ -15,16 +15,16 @@ public class Client {
 
 	public static void main(String[] args) throws IOException {
 		
-		Socket socket = new Socket();
+		Socket socket = new Socket();//전화기 하나 만들기
 		
 		System.out.println("<클라이언트 시작>");
 		System.out.println("=======================================");
 		
 		System.out.println("[서버에 연결을 요청합니다.]");
 		
-		socket.connect(new InetSocketAddress("192.168.0.65" , 10001));
+		socket.connect(new InetSocketAddress("192.168.0.65" , 10001));//전화걸기
 		
-		System.out.println("[서버에 연결 되었습니다.]");
+		System.out.println("[서버에 연결 되었습니다.]");//빨대 생성o
 		
 		//메세지 보내기
 		//OutputStream out = new FileOutputStream("파일경로")
@@ -34,34 +34,66 @@ public class Client {
 		//BufferedWriter bw =  new BufferedWriter(osw);
 		
 		//메세지 보내기용 스트림
-		OutputStream os = socket.getOutputStream();
-		OutputStreamWriter osw  = new OutputStreamWriter(os, "UTF-8");
-		BufferedWriter bw = new BufferedWriter(osw);
+		//OutputStream os = socket.getOutputStream();
+		//OutputStreamWriter osw  = new OutputStreamWriter(os, "UTF-8");
+		//BufferedWriter bw = new BufferedWriter(osw);
 		
 		//메세지 받기용 스트림
 		InputStream is = socket.getInputStream();
 		InputStreamReader isr  = new InputStreamReader(is, "UTF-8");
 		BufferedReader br = new BufferedReader(isr);
 		
-		//키보드 입력
-		Scanner sc = new Scanner(System.in);
-		String str = sc.nextLine();
+		///
+		//스캐너준비
+		Scanner sc = new Scanner(System.in);//키보드는 한번만 만들어도 되니까 반복에서 빼주자
+
+		/*InputStream sc = System.in;
+		InputStreamReader scIsr = new InputStreamReader(sc, "UTF-8");
+		BufferedReader scBr = new BufferedReader(scIsr);
+		*/
+           while(true) {
+
+           //키보드 입력
+          String str = sc.nextLine();
+          //String str =  scBr.readLine();*
+
+
+          if("/q".equals(str)/*주소비교*/) {
+	      break;
+          }
 		
 		//메세지 보내기
 		
 		
-		bw.write(str); //줄하나 보내고 글씨보내는것 까지 : client write까지
-		bw.newLine();
-		bw.flush();
+		//bw.write(str); //줄하나 보내고 글씨보내는것 까지 : client write까지
+		//bw.newLine();
+		//bw.flush();
 		
 		//메세지 받기용
 		String reMsg = br.readLine();
 		System.out.println("server:[" + reMsg + "]" );
 		
+		}
+		
+		System.out.println("=======================");
+		System.out.println("<클라이언트 종료>");
+		
+		//////////////////////////////////
+		//println 만들기
+		OutputStream pos = System.out;
+		OutputStreamWriter posw = new OutputStreamWriter(pos, "UTF-8"); //번역기
+		BufferedWriter pbw = new BufferedWriter(posw);
+		
+		pbw.write("println 테스트");
+		pbw.newLine();
+		pbw.flush();
+	
+		///  /q 넣으면 종료
+		
 		//닫기
 		sc.close();
 		br.close();
-		bw.close();
+		//bw.close();
 		socket.close();
 
 	}

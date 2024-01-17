@@ -18,7 +18,7 @@ public class Server {
 		
 		//서버소켓 객체 생성
 		
-		ServerSocket serverSocket= new ServerSocket();
+		ServerSocket serverSocket/*스텍영역*/= new ServerSocket();
 		
 		//InetSocketAddress aaa = new InetSocketAddress("192.168.0.65" , "10001")
 		//serverSocket.bind("192.168.0.65" , "10001");
@@ -34,7 +34,7 @@ public class Server {
 		
 		//클라이언트가 접속을 하면 accept()가 실행됨
 		
-		Socket socket = serverSocket.accept();
+		Socket socket = serverSocket.accept();//실행하려고 대기중 client 쪽 connect 되면 accept 됨
 		System.out.println("[클라이언트가 연결 되었습니다.]");
 		
 		//in 메세지 받기용 스트림
@@ -47,14 +47,25 @@ public class Server {
 		OutputStreamWriter isw = new OutputStreamWriter(os, "UTF-8");
 		BufferedWriter bw = new BufferedWriter(isw);
 		
+		/////
+		while(true) {
 		//메세지 받기
 		String msg = br.readLine();
+		if(msg==null) {
+			break;
+		}
+		
 		System.out.println("받은메세지:" + msg);
 		
 		//메세지 보내기
 		bw.write(msg);
 		bw.newLine();
 		bw.flush();
+		}
+		
+		System.out.println("======================");
+		System.out.println("<서버 종료>");
+		///////
 		
 		//닫기
 		bw.close();
